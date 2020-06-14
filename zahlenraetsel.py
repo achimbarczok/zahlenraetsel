@@ -5,13 +5,19 @@
 import math
 
 def kombinieren(zahl1,zahl2,operator):
-    #berechnet eine Zahlenkombination per Addition, Subtraktion, Multiplikation, Division oder Potenz
+    # Berechnet eine Zahlenkombination per Addition, Subtraktion, Multiplikation, Division oder Potenz
 
 
     #gibt das Ergebnis aus
 
 def main():
-    #berechnet Zahlenraetsel nach Böer: x ? y = z
+    # Berechnet Zahlenraetsel nach Heinz Böer:
+    # x ? y = z
+    # wobei x und y je eine Würfelzahl von 1 bis 6 sind
+    # Beide Würfel dürfen 0 bis 2 mal in einer Rechnung verwendet werden
+    # Genutzt werden dürfen die 4 Grundrechenarten, Potenzieren und Fakultäten
+    # Ziel ist es, eine Rechnung zu finden, die z ergibt, wobei Z zwischen 1 und 20 liegt
+    # Beispiel
 
     zahl[0] = 1
     zahl[1] = 2
