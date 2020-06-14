@@ -10,14 +10,27 @@ Beide Würfel dürfen 0 bis 2 mal in einer Rechnung verwendet werden. Genutzt we
 
 Ziel ist es, eine Rechnung zu finden, die z ergibt, wobei Z zwischen 1 und 20 liegt.
 
-Beispiele:
+Beispiel:
 
+```
 1 ? 3 = 18
+```
 
 Beispiellösungen:
 
-(1+1)*3*3
-3!*3
+```
+(1+1)*3*3 = 18
+3!*3 = 18
+```
+
+Aber für
+
+```
+1 ? 5 = 18
+```
+
+gibt es keine Lösung.
+
 
 ## Voraussetzungen
 
