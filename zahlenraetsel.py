@@ -6,12 +6,30 @@ import math
 
 def berechnen(zahl1,zahl2,operator):
     # Berechnet eine Zahlenkombination per Addition, Subtraktion, Multiplikation, Division oder Potenz
-    #gibt das Ergebnis als Int aus
+    # gibt das Ergebnis als Int aus
+
+    if operator == 0:
+        return(zahl1 + zahl2)
+    elif operator == 1:
+        return(zahl1 - zahl2)
+    elif operator == 2:
+        return(zahl1 / zahl2)
+    elif operator == 3:
+        return(zahl1 * zahl2)
+    elif operator == 4:
+        if zahl2 < 10000 and zahl1 < 100:
+            # Hier setzen wir sicherheitshalber ein Maximum, um zu lange Rechenzeiten bei Potenzen zu vermeiden
+            return(zahl1 ** zahl2)
+        else:
+            pass
+    else:
+        return "Fehler"
 
 
-def kombinationen(zahl1,zahl2,ergebnis)
+def kombinationen(zahl1,zahl2,ergebnis):
     # Gibt eine Liste aller möglichen Kombinationen
     # Ausgabe erfolgt als String im Format "(1+1)*3*3"
+    return()
 
 def main():
     # Berechnet Zahlenraetsel nach Heinz Böer:
@@ -22,20 +40,15 @@ def main():
     # Ziel ist es, eine Rechnung zu finden, die z ergibt, wobei Z zwischen 1 und 20 liegt
     # Beispiel
 
-    zahl[0] = 1
-    zahl[1] = 2
+    zahlenliste= []
+
+    #Beispiele nehmen
+    zahlenliste.append(1)
+    zahlenliste.append(2)
 
     #fakultät berücksichtigen!
-    zahl[2] = math.factorial(zahl1)
-    zahl[3] = math.factorial(zahl2)
-
-
-
-    if zahl1 == zahl2:
-        zahlenliste = [int(zahl1)]
-    else:
-        zahlenliste = [int(zahl1), int(zahl2)]
-    print(zahlenliste)
+    zahlenliste.append(math.factorial(zahlenliste[0]))
+    zahlenliste.append(math.factorial(zahlenliste[2]))
 
 
 main()
