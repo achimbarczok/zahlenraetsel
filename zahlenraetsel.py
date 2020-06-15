@@ -4,11 +4,14 @@
 
 import math
 
-def kombinieren(zahl1,zahl2,operator):
+def berechnen(zahl1,zahl2,operator):
     # Berechnet eine Zahlenkombination per Addition, Subtraktion, Multiplikation, Division oder Potenz
+    #gibt das Ergebnis als Int aus
 
 
-    #gibt das Ergebnis aus
+def kombinationen(zahl1,zahl2,ergebnis)
+    # Gibt eine Liste aller möglichen Kombinationen
+    # Ausgabe erfolgt als String im Format "(1+1)*3*3"
 
 def main():
     # Berechnet Zahlenraetsel nach Heinz Böer:
