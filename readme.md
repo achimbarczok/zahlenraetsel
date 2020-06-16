@@ -1,5 +1,9 @@
 # Zahlenrätsel
 
+Work in Progress!
+
+Dieses Programm ist noch im pre Alpha Status und funktioniert noch nicht 
+
 Berechnet Zahlenraetsel nach Heinz Böer:
 
 x ? y = z
