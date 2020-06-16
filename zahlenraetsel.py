@@ -5,58 +5,72 @@
 Copyright (c) 2020 Achim Barczok (achim@barczok.de)
 All rights reserved.
 
-Zahlenkombinationen nach Heinz Böer berechnen
+Solves number puzzles in the style of Heinz Böer
+
 """
 
 import math
+import logging
 
-def berechnen(zahl1, zahl2, operator):
+# some debug options
+logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(message)s')
+
+
+
+def computing(number1, number2, operator):
     """
-    Berechnet eine Zahlenkombination per
-    Addition, Subtraktion, Multiplikation, Division oder Potenz
-    gibt das Ergebnis als Int aus
+    Computes two numbers:
+    Addition, Subtraction, Multiplication, Division, Power
     """
 
     if operator == 0:
-        return zahl1 + zahl2
+        return number1 + number2
     if operator == 1:
-        return zahl1 - zahl2
+        return number1 - number2
     if operator == 2:
-        return zahl1 / zahl2
+        return number1 / number2
     if operator == 3:
-        return zahl1 * zahl2
-    if operator == 4 and zahl2 < 10000 and zahl1 < 100:
-        # Hier setzen wir sicherheitshalber ein Maximum,
-        # um zu lange Rechenzeiten bei Potenzen zu vermeiden
-        return zahl1 ** zahl2
+        return number1 * number2
+    if operator == 4 and number2 < 10000 and number1 < 100:
+        # as computing high numbers with Powers take very long and
+        # and are unlikely to give good results, we strip them a bit
+        return number1 ** number2
 
-
-def kombinationen(zahl1, zahl2, ergebnis):
+def combinations(number1, number2, result):
     """
     Gibt eine Liste aller möglichen Kombinationen
     Ausgabe erfolgt als String im Format "(1+1)*3*3"
     """
-    return()
+
+    # each number can also be used as factorial,
+    # that gives up to four possible numbers for each position
+    number_set = set()
+    number_set.update([number1,number2,math.factorial(number1),math.factorial(number2)])
+
+    for pos1 in number_set:
+        logging.debug(pos1)
+
+    # TODO: generate string for the result
+
+    # TODO: add 2nd position
+
+    # TODO: add 3rd position
+
+    # TODO: add 4th position
+    return ()
+
 
 def main():
     """
-    Berechnet Zahlenraetsel nach Heinz Böer:
-    x ? y = z
-    wobei x und y je eine Würfelzahl von 1 bis 6 sind
-    Beide Würfel dürfen 0 bis 2 mal in einer Rechnung verwendet werden
-    Genutzt werden dürfen die 4 Grundrechenarten, Potenzieren und Fakultäten
-    Ziel ist es, eine Rechnung zu finden, die z ergibt, wobei Z zwischen 1 und 20 liegt
-    Beispiel
+    Solves number puzzles in the style of  Heinz Böer:
+        x ? y = z
+    While x and y are dice results between 1 and 6
+    Each dice can be used 0, 1 or 2 times in the calculation
+    Allowed are +, -, *, /, Power and Factorials
     """
-    zahlenliste = []
 
-    #Beispiele nehmen
-    zahlenliste.append(1)
-    zahlenliste.append(2)
+    combinations(1,2,2)
 
-    #fakultät berücksichtigen!
-    zahlenliste.append(math.factorial(zahlenliste[0]))
-    zahlenliste.append(math.factorial(zahlenliste[2]))
 
 
 main()

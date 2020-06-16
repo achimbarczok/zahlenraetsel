@@ -1,6 +1,7 @@
-# Zahlenrätsel
+# Zahlenrätsel 
 
 Work in Progress!
+
 
 Dieses Programm ist noch im pre Alpha Status und funktioniert noch nicht 
 
