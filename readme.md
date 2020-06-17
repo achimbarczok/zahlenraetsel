@@ -40,7 +40,7 @@ gibt es keine Lösung.
 ## Voraussetzungen
 
  * Git ≥ 1.8
- * Python ≥ 3.6
+ * Python ≥ 3.7
  * Libraries: math
 
 
