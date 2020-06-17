@@ -36,19 +36,24 @@ def computing(number1, number2, operator):
         # and are unlikely to give good results, we strip them a bit
         return number1 ** number2
 
+    # returns 0 if no or wrong operator is given
+    return 0
+
 def combinations(number1, number2, result):
     """
-    Gibt eine Liste aller möglichen Kombinationen
-    Ausgabe erfolgt als String im Format "(1+1)*3*3"
+    Defines a set of all possible outcomes that lead to the result
+    The result is a string in the format of "(1+1)*3*3"
     """
 
     # each number can also be used as factorial,
     # that gives up to four possible numbers for each position
     number_set = set()
-    number_set.update([number1,number2,math.factorial(number1),math.factorial(number2)])
+    number_set.update([number1, number2, math.factorial(number1), math.factorial(number2)])
 
     for pos1 in number_set:
         logging.debug(pos1)
+        if pos1 is result:
+            return True
 
     # TODO: generate string for the result
 
@@ -69,7 +74,7 @@ def main():
     Allowed are +, -, *, /, Power and Factorials
     """
 
-    combinations(1,2,2)
+    combinations(1, 2, 2)
 
 
 
