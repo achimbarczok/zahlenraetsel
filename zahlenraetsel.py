@@ -122,7 +122,7 @@ def computing(number1, number2, operator):
         # and are unlikely to give good results, we strip them a bit
         return number1 ** number2
 
-    # returns 0 if no or wrong operator is given
+    # returns 0 if no or wrong operator is given.
     return 0
 
 
