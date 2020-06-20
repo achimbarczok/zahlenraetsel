@@ -16,6 +16,40 @@ import logging
 logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(message)s')
 
 
+# define, how a dice can look like
+class Dice:
+    def __init__(self, side, fact):
+        if (side) in range(1, 6):
+            self.side = side
+        else:
+            print("Ungültiger Würfel")
+        if (fact) is True:
+            self.fact = True
+        else:
+            self.fact = False
+
+    def get_side(self):
+        return self.side
+
+    def get_fact(self):
+        return math.factorial(self.side)
+
+
+# define, what a result looks like
+class Combination:
+    def __init__(self):
+        dices = []
+        self.dices = dices
+
+        result
+
+    def __str__(self):
+        calc_string = ""
+        self.calc_string = calc_string
+
+    def add_dice(self, dice):
+        self.dices.append(dice)
+
 
 def computing(number1, number2, operator):
     """
@@ -39,7 +73,8 @@ def computing(number1, number2, operator):
     # returns 0 if no or wrong operator is given
     return 0
 
-def combinations(number1, number2, result):
+
+def all_combinations(number1, number2, result):
     """
     Defines a set of all possible outcomes that lead to the result
     The result is a string in the format of "(1+1)*3*3"
@@ -53,7 +88,9 @@ def combinations(number1, number2, result):
     for pos1 in number_set:
         logging.debug(pos1)
         if pos1 is result:
-            return True
+            logging.debug(str(pos1) + " ergibt " + str(result))
+        for pos2 in number_set:
+            logging.debug(str(pos1) + ", " + str(pos2))
 
     # TODO: generate string for the result
 
@@ -74,8 +111,7 @@ def main():
     Allowed are +, -, *, /, Power and Factorials
     """
 
-    combinations(1, 2, 2)
-
+    all_combinations(1, 2, 2)
 
 
 main()
