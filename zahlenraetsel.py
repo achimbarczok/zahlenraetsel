@@ -57,6 +57,7 @@ class Combination:
         calc_string = ""
         self.calc_string = calc_string
         self.result = 0
+        self.calc_rule = 0
 
     def __str__(self):
         return self.calc_string
@@ -64,28 +65,44 @@ class Combination:
     def get_result(self):
         """ Calculates result and creates result string """
         self.result = 0
+        self.calc_rule = 4
         for position in self.dices:
+
+            # if brackets have to be written, we insert them here in the string according to math rules
+            if position.calc > self.calc_rule:
+                # logging.debug(position.calc)
+                # logging.debug(self.calc_rule)
+                self.calc_string = "(" + self.calc_string + ")"
+                # logging.debug(self.calc_string)
+
             if position.calc == 0:
                 self.result = self.result + position.side
                 if self.calc_string == "":
                     self.calc_string = str(position.side)
                 else:
-                    self.calc_string = "(" + self.calc_string + "+" + str(position.side) + ")"
+                    self.calc_string = self.calc_string + "+" + str(position.side)
+                    self.calc_rule = 1
             elif position.calc == 1:
                 self.result = self.result - position.side
-                self.calc_string = "(" + self.calc_string + "-" + str(position.side) + ")"
+                self.calc_string = self.calc_string + "-" + str(position.side)
+                self.calc_rule = 1
             elif position.calc == 2:
                 self.result = self.result * position.side
-                self.calc_string = "(" + self.calc_string + "*" + str(position.side) + ")"
+                self.calc_string = self.calc_string + "*" + str(position.side)
+                self.calc_rule = 3
             elif position.calc == 3:
                 self.result = self.result / position.side
-                self.calc_string = "(" + self.calc_string + "/" + str(position.side) + ")"
+                self.calc_string = self.calc_string + "/" + str(position.side)
+                self.calc_rule = 3
             elif position.calc == 4:
                 self.result = self.result ** position.side
-                self.calc_string = "(" + self.calc_string + "**" + str(position.side) + ")"
+                self.calc_string = self.calc_string + "**" + str(position.side)
+                self.calc_rule = 4
             else:
                 print("Error")
-            # logging.debug(self.result)
+
+        # logging.debug(self.result)
+
         return self.result, self.calc_string
 
     def add_dice(self, dice):
@@ -131,8 +148,8 @@ def main():
     # mit Klassen testen:
     neue_kombi = Combination()
     neue_kombi.add_dice(Dice(6, 0, False))
-    neue_kombi.add_dice(Dice(6, 1, False))
-    neue_kombi.add_dice(Dice(2, 2, False))
+    neue_kombi.add_dice(Dice(6, 2, False))
+    neue_kombi.add_dice(Dice(2, 1, False))
     neue_kombi.add_dice(Dice(2, 3, False))
     print(neue_kombi.get_result()[1] + "=" + str(neue_kombi.get_result()[0]))
 
