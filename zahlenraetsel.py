@@ -29,6 +29,9 @@ class Dice:
         else:
             self.fact = False
 
+    def __str__(self):
+        return str(self.side)
+
     def get_side(self):
         """ returns side of the dice """
         return self.side
@@ -37,6 +40,30 @@ class Dice:
         """ returns factorial of the dice """
         return math.factorial(self.side)
 
+class Calculation:
+    """ Between each dice pair, a calculation can be made """
+    def __init__(self, type, order):
+        if type in range(1, 4):
+            self.type = type
+        else:
+            print("ungültige Berechnung")
+        if order is True:
+            self.order = order
+        else:
+            self.order = 0
+
+    def __str__(self):
+        if self.type == 0:
+            return "+"
+        if self.type == 1:
+            return "-"
+        if self.type == 2:
+            return "*"
+        if self.txpe == 3:
+            return "/"
+        if self.type == 4:
+            return "*"
+
 
 # define, what a result looks like
 class Combination:
@@ -44,19 +71,36 @@ class Combination:
     def __init__(self):
         dices = []
         self.dices = dices
+        calculations = []
+        self.calculations = calculations
+        order = []
+        self.order = order
         calc_string = ""
         self.calc_string = calc_string
 
     def __str__(self):
         return self.calc_string
 
+    def get_result(self):
+        self.result = 0
+        for pos1 in self.dices:
+            self.result = self.result + pos1
+            self.calc_string = self.calc_string + str(pos1)
+        return self.result
 
     def add_dice(self, dice):
         """ add a dice to the Combination """
-        if len(self.dices) < 4:
+        if len(self.dices) < 5:
             self.dices.append(dice)
         else:
             print("max. 4 Würfel pro Kombination!")
+
+    def add_calc(self, calc):
+        """ add a calculation to the Combinaction """
+        if len(self.calculations) < 3:
+            self.calculations.append(calc)
+        else:
+            print("max. 3 Berechnungen!")
 
 
 def computing(number1, number2, operator):
@@ -112,7 +156,18 @@ def main():
     Allowed are +, -, *, /, Power and Factorials
     """
 
-    all_combinations(1, 2, 2)
+    # all_combinations(1, 2, 2)
+
+    # mit Klassen testen:
+    neue_kombi = Combination()
+    neue_kombi.add_dice(6)
+    neue_kombi.add_calc(2)
+    neue_kombi.add_dice(1)
+    neue_kombi.add_calc(2)
+    neue_kombi.add_dice(1)
+    neue_kombi.add_calc(2)
+    neue_kombi.add_dice(1)
+    print(neue_kombi.get_result())
 
 
 main()
