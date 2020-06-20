@@ -38,10 +38,9 @@ class Dice:
 
 
     def __str__(self):
-        if self.fact is false:
+        if self.fact is False:
             return str(self.side)
-        else:
-            return(str(self.side) + "!")
+        return str(self.side) + "!"
 
     def get_fact(self):
         """ returns factorial of the dice """
@@ -57,11 +56,13 @@ class Combination:
         self.order = order
         calc_string = ""
         self.calc_string = calc_string
+        self.result = 0
 
     def __str__(self):
         return self.calc_string
 
     def get_result(self):
+        """ Calculates result and creates result string """
         self.result = 0
         for position in self.dices:
             if position.calc == 0:
@@ -94,12 +95,6 @@ class Combination:
         else:
             print("max. 4 Würfel pro Kombination!")
 
-    def add_calc(self, calc):
-        """ add a calculation to the Combinaction """
-        if len(self.calculations) < 3:
-            self.calculations.append(calc)
-        else:
-            print("max. 3 Berechnungen!")
 
 def all_combinations(number1, number2, result):
     """
@@ -135,10 +130,10 @@ def main():
 
     # mit Klassen testen:
     neue_kombi = Combination()
-    neue_kombi.add_dice(Dice(6,0, False))
-    neue_kombi.add_dice(Dice(6,1, False))
-    neue_kombi.add_dice(Dice(2,2, False))
-    neue_kombi.add_dice(Dice(2,3, False))
+    neue_kombi.add_dice(Dice(6, 0, False))
+    neue_kombi.add_dice(Dice(6, 1, False))
+    neue_kombi.add_dice(Dice(2, 2, False))
+    neue_kombi.add_dice(Dice(2, 3, False))
     print(neue_kombi.get_result()[1] + "=" + str(neue_kombi.get_result()[0]))
 
 main()
