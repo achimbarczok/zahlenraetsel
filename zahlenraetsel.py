@@ -18,37 +18,45 @@ logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(message)s')
 
 # define, how a dice can look like
 class Dice:
+    """ At every position, a dice is placed """
     def __init__(self, side, fact):
-        if (side) in range(1, 6):
+        if side in range(1, 6):
             self.side = side
         else:
             print("Ungültiger Würfel")
-        if (fact) is True:
+        if fact is True:
             self.fact = True
         else:
             self.fact = False
 
     def get_side(self):
+        """ returns side of the dice """
         return self.side
 
     def get_fact(self):
+        """ returns factorial of the dice """
         return math.factorial(self.side)
 
 
 # define, what a result looks like
 class Combination:
+    """ a Combination consists of up to 4 dices and a result """
     def __init__(self):
         dices = []
         self.dices = dices
-
-        result
-
-    def __str__(self):
         calc_string = ""
         self.calc_string = calc_string
 
+    def __str__(self):
+        return self.calc_string
+
+
     def add_dice(self, dice):
-        self.dices.append(dice)
+        """ add a dice to the Combination """
+        if len(self.dices) < 4:
+            self.dices.append(dice)
+        else:
+            print("max. 4 Würfel pro Kombination!")
 
 
 def computing(number1, number2, operator):
@@ -88,17 +96,10 @@ def all_combinations(number1, number2, result):
     for pos1 in number_set:
         logging.debug(pos1)
         if pos1 is result:
-            logging.debug(str(pos1) + " ergibt " + str(result))
+            logging.debug("%s ergibt %s", pos1, pos2)
         for pos2 in number_set:
-            logging.debug(str(pos1) + ", " + str(pos2))
+            logging.debug("%s, %s", pos1, pos2)
 
-    # TODO: generate string for the result
-
-    # TODO: add 2nd position
-
-    # TODO: add 3rd position
-
-    # TODO: add 4th position
     return ()
 
 
