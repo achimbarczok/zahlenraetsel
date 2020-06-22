@@ -16,7 +16,6 @@ import logging
 logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(message)s')
 
 
-# define, how a dice can look like and how its calculated
 class Dice:
     """ At every position, a dice is placed """
     def __init__(self, side, calc, fact):
@@ -25,7 +24,7 @@ class Dice:
         else:
             print("Ungültiger Würfel")
 
-        if calc in range(0, 4):
+        if calc in range(0, 5):
             self.calc = calc
         else:
             print("Ungültige Berechnung")
@@ -46,7 +45,6 @@ class Dice:
         """ returns factorial of the dice """
         return math.factorial(self.side)
 
-# define, what a result looks like
 class Combination:
     """ a Combination consists of up to 4 dices and a result """
     def __init__(self):
@@ -132,11 +130,12 @@ def all_combinations(number1, number2, result):
 
     for pos1 in number_set:
         if pos1 is result:
+            # Combinations with only one dice don't need a Combination class
             result_set.add(pos1)
             logging.debug("%s ergibt %s", pos1, pos1)
         for pos2 in number_set:
             logging.debug("%s, %s", pos1, pos1)
-            for calc_type in range(0, 4):
+            for calc_type in range(0, 5):
                 kombination = Combination()
                 kombination.add_dice(Dice(pos1, 0, False))
                 kombination.add_dice(Dice(pos2, calc_type, False))
@@ -145,6 +144,7 @@ def all_combinations(number1, number2, result):
                 if kombination_erg[0] is result:
                     result_set.add(kombination_erg[1])
                     logging.debug("%s ergibt %s", kombination_erg[1], kombination_erg[0])
+
     return result_set
 
 
