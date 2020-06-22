@@ -68,7 +68,8 @@ class Combination:
         self.calc_rule = 4
         for position in self.dices:
 
-            # if brackets have to be written, we insert them here in the string according to math rules
+            # if brackets have to be written,
+            # we insert them here in the string according to math rules
             if position.calc > self.calc_rule:
                 # logging.debug(position.calc)
                 # logging.debug(self.calc_rule)
@@ -121,17 +122,30 @@ def all_combinations(number1, number2, result):
 
     # each number can also be used as factorial,
     # that gives up to four possible numbers for each position
+    # TODO: not math.factorial integrated yet
+    # TODO: 3 and 4 numbers
+
     number_set = set()
-    number_set.update([number1, number2, math.factorial(number1), math.factorial(number2)])
+    number_set.update([number1, number2])
+    result_set = set()
+    logging.debug("%s, %s", number1, number2)
 
     for pos1 in number_set:
-        logging.debug(pos1)
         if pos1 is result:
-            logging.debug("%s ergibt %s", pos1, pos2)
+            result_set.add(pos1)
+            logging.debug("%s ergibt %s", pos1, pos1)
         for pos2 in number_set:
-            logging.debug("%s, %s", pos1, pos2)
-
-    return ()
+            logging.debug("%s, %s", pos1, pos1)
+            for calc_type in range(0, 4):
+                kombination = Combination()
+                kombination.add_dice(Dice(pos1, 0, False))
+                kombination.add_dice(Dice(pos2, calc_type, False))
+                kombination_erg = kombination.get_result()
+                # logging.debug("%s ergibt %s", kombination_erg[1], kombination_erg[0])
+                if kombination_erg[0] is result:
+                    result_set.add(kombination_erg[1])
+                    logging.debug("%s ergibt %s", kombination_erg[1], kombination_erg[0])
+    return result_set
 
 
 def main():
@@ -143,9 +157,10 @@ def main():
     Allowed are +, -, *, /, Power and Factorials
     """
 
-    # all_combinations(1, 2, 2)
+    # Test all combinations
+    print(all_combinations(1, 2, 2))
 
-    # mit Klassen testen:
+    # Test Class Combination:
     neue_kombi = Combination()
     neue_kombi.add_dice(Dice(6, 0, False))
     neue_kombi.add_dice(Dice(6, 2, False))
