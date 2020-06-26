@@ -11,6 +11,8 @@ Solves number puzzles in the style of Heinz Böer
 
 import math
 import logging
+import itertools
+
 
 # some debug options
 logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(message)s')
@@ -127,56 +129,54 @@ def all_combinations(number1, number2, result):
     result_set = set()
     logging.debug("%s, %s", number1, number2)
 
-    for pos1 in number_set:
-        for pos2 in number_set:
-            for pos3 in number_set:
-                for pos4 in number_set:
-                    logging.debug("%s, %s, %s, %s", pos1, pos2, pos3, pos4)
-                    #only calculate, if number 1 and number 2 are used twice
-                    if (pos1+pos2+pos3+pos4) == (number1*2 + number2*2):
-                        if pos1 is result:
-                            # Combinations with only one dice don't need a Combination class
-                            result_set.add(pos1)
-                            logging.debug("%s ergibt %s", pos1, pos1)
+    # use itertools, to have less nested loops
+    for positions in itertools.product(number_set, repeat=4):
+        logging.debug("%s, %s, %s, %s", positions[0], positions[1], positions[2], positions[3])
+        #only calculate, if number 1 and number 2 are used twice
+        if (positions[0]+positions[1]+positions[2]+positions[3]) == (number1*2 + number2*2):
+            if positions[0] is result:
+                # Combinations with only one dice don't need a Combination class
+                result_set.add(positions[0])
+                logging.debug("%s ergibt %s", positions[0], positions[0])
 
-                        for calc_type2 in range(0, 5):
-                            kombination = Combination()
-                            kombination.add_dice(Dice(pos1, 0, False))
-                            kombination.add_dice(Dice(pos2, calc_type2, False))
-                            kombination_erg = kombination.get_result()
-                            # logging.debug("%s ergibt %s", kombination_erg[1], kombination_erg[0])
-                            if kombination_erg[0] is result:
-                                result_set.add(kombination_erg[1])
-                                logging.debug("%s ergibt %s",
-                                              kombination_erg[1], kombination_erg[0])
+            for calc_type2 in range(0, 5):
+                kombination = Combination()
+                kombination.add_dice(Dice(positions[0], 0, False))
+                kombination.add_dice(Dice(positions[1], calc_type2, False))
+                kombination_erg = kombination.get_result()
 
-                            logging.debug("%s, %s, %s", pos1, pos1, pos3)
-                            for calc_type3 in range(0, 5):
-                                kombination3 = Combination()
-                                kombination3.add_dice(Dice(pos1, 0, False))
-                                kombination3.add_dice(Dice(pos2, calc_type2, False))
-                                kombination3.add_dice(Dice(pos3, calc_type3, False))
-                                kombination3_erg = kombination3.get_result()
-                                # logging.debug("%s ergibt %s",
-                                # kombination_erg[1], kombination_erg[0])
-                                if kombination3_erg[0] is result:
-                                    result_set.add(kombination3_erg[1])
-                                    logging.debug("%s ergibt %s",
-                                                  kombination3_erg[1], kombination3_erg[0])
+                if kombination_erg[0] is result:
+                    result_set.add(kombination_erg[1])
+                    logging.debug("%s ergibt %s",
+                                  kombination_erg[1], kombination_erg[0])
 
-                                logging.debug("%s, %s, %s, %s", pos1, pos1, pos3, pos4)
-                                for calc_type4 in range(0, 5):
-                                    kombination4 = Combination()
-                                    kombination4.add_dice(Dice(pos1, 0, False))
-                                    kombination4.add_dice(Dice(pos2, calc_type2, False))
-                                    kombination4.add_dice(Dice(pos3, calc_type3, False))
-                                    kombination4.add_dice(Dice(pos4, calc_type4, False))
-                                    kombination4_erg = kombination4.get_result()
-                                    # logging.debug("%s ergibt %s",
-                                    # kombination_erg[1], kombination_erg[0])
-                                    if kombination4_erg[0] is result:
-                                        result_set.add(kombination4_erg[1])
-                                        logging.debug("%s ergibt %s", kombination4_erg[1], kombination4_erg[0])
+                logging.debug("%s, %s, %s", positions[0], positions[1], positions[2])
+
+                for calc_type3 in range(0, 5):
+                    kombination3 = Combination()
+                    kombination3.add_dice(Dice(positions[0], 0, False))
+                    kombination3.add_dice(Dice(positions[1], calc_type2, False))
+                    kombination3.add_dice(Dice(positions[2], calc_type3, False))
+                    kombination3_erg = kombination3.get_result()
+
+                    if kombination3_erg[0] is result:
+                        result_set.add(kombination3_erg[1])
+                        logging.debug("%s ergibt %s",
+                                      kombination3_erg[1], kombination3_erg[0])
+
+                    logging.debug("%s, %s, %s, %s",
+                                  positions[0], positions[1], positions[2], positions[3])
+                    for calc_type4 in range(0, 5):
+                        kombination4 = Combination()
+                        kombination4.add_dice(Dice(positions[0], 0, False))
+                        kombination4.add_dice(Dice(positions[1], calc_type2, False))
+                        kombination4.add_dice(Dice(positions[2], calc_type3, False))
+                        kombination4.add_dice(Dice(positions[3], calc_type4, False))
+                        kombination4_erg = kombination4.get_result()
+
+                        if kombination4_erg[0] is result:
+                            result_set.add(kombination4_erg[1])
+                            logging.debug("%s ergibt %s", kombination4_erg[1], kombination4_erg[0])
 
     return result_set
 
