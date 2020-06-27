@@ -43,6 +43,16 @@ class Dice:
         else:
             print("Ungültige Berechnung")
 
+        # define rules for brackets in strings
+        if calc in range(0, 2):
+            self.calc_range = 1
+
+        if calc in range(2, 2):
+            self.calc_range = 3
+
+        if calc == 4:
+            self.calc_range = 4
+
         if fact is True:
             self.fact = True
             self.side = math.factorial(self.side)
@@ -70,60 +80,64 @@ class Combination:
         self.calc_string = calc_string
         self.result = 0
         self.calc_rule = 0
+        self.dice = []
 
     def __str__(self):
         return self.calc_string
 
     def get_result(self):
-        """ Calculates result and creates result string """
-        self.result = 0
-        self.calc_rule = 4
-        for position in self.dices:
-
-            # if brackets have to be written,
-            # we insert them here in the string according to math rules
-            if position.calc > self.calc_rule:
-                # logging.debug(position.calc)
-                # logging.debug(self.calc_rule)
-                self.calc_string = "(" + self.calc_string + ")"
-                # logging.debug(self.calc_string)
-
-            if position.calc == 0:
-                self.result = self.result + position.side
-                if self.calc_string == "":
-                    self.calc_string = str(position.side)
-                else:
-                    self.calc_string = self.calc_string + "+" + str(position.side)
-                    self.calc_rule = 1
-            elif position.calc == 1:
-                self.result = self.result - position.side
-                self.calc_string = self.calc_string + "-" + str(position.side)
-                self.calc_rule = 1
-            elif position.calc == 2:
-                self.result = self.result * position.side
-                self.calc_string = self.calc_string + "*" + str(position.side)
-                self.calc_rule = 3
-            elif position.calc == 3:
-                self.result = self.result / position.side
-                self.calc_string = self.calc_string + "/" + str(position.side)
-                self.calc_rule = 3
-            elif position.calc == 4:
-                self.result = self.result ** position.side
-                self.calc_string = self.calc_string + "**" + str(position.side)
-                self.calc_rule = 4
-            else:
-                print("Error")
-
-        # logging.debug(self.result)
+        """ returns result and string """
 
         return self.result, self.calc_string
 
     def add_dice(self, dice):
         """ add a dice to the Combination """
+
+        self.dice = dice
         if len(self.dices) < 4:
             self.dices.append(dice)
         else:
             print("max. 4 Würfel pro Kombination!")
+
+
+
+       # if brackets have to be written,
+       # we insert them here in the string according to math rules
+       #if self.dice.calc > self.calc_rule:
+            # logging.debug(position.calc)
+            # logging.debug(self.calc_rule)
+            #self.calc_string = "(" + self.calc_string + ")"
+            # logging.debug(self.calc_string)
+
+        if self.dice.calc == 0:
+            self.result = self.result + self.dice.side
+            if self.calc_string == "":
+                self.calc_string = str(self.dice.side)
+            else:
+                self.calc_string = self.calc_string + "+" + str(self.dice.side)
+                self.calc_rule = 1
+        elif self.dice.calc == 1:
+            self.result = self.result - self.dice.side
+            self.calc_string = self.calc_string + "-" + str(self.dice.side)
+            self.calc_rule = 1
+        elif self.dice.calc == 2:
+            self.result = self.result * self.dice.side
+            self.calc_string = self.calc_string + "*" + str(self.dice.side)
+            self.calc_rule = 3
+        elif self.dice.calc == 3:
+            self.result = self.result / self.dice.side
+            self.calc_string = self.calc_string + "/" + str(self.dice.side)
+            self.calc_rule = 3
+        elif self.dice.calc == 4:
+            self.result = self.result ** self.dice.side
+            self.calc_string = self.calc_string + "**" + str(self.dice.side)
+            self.calc_rule = 4
+        else:
+            print("Error")
+
+        # logging.debug(self.result)
+
+
 
 
 def all_combinations(number1, number2, result):
@@ -148,7 +162,7 @@ def all_combinations(number1, number2, result):
         if (positions[0]+positions[1]+positions[2]+positions[3]) == (number1*2 + number2*2):
             if positions[0] is result:
                 # Combinations with only one dice don't need a Combination class
-                result_set.add(positions[0])
+                result_set.add(str(positions[0]))
                 logging.debug("%s ergibt %s", positions[0], positions[0])
 
             for calc_type2 in range(0, 5):
@@ -203,7 +217,7 @@ def main():
     """
 
     # Test all combinations
-    print(all_combinations(1, 2, 3))
+    print(all_combinations(1, 2, 2))
 
     # Test Class Combination:
     neue_kombi = Combination()
