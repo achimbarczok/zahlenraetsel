@@ -2,7 +2,7 @@
 # -*- coding: utf8 -*-
 
 """
-Solves number puzzles in the style of Heinz Böer
+Solves number puzzles in the style of Heinz Böer.
 
 Copyright (c) 2020 Achim Barczok (achim@lostfile.de)
 
