@@ -33,9 +33,11 @@ logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(message)s')
 
 class Dice:
     """ At every position, a dice is placed """
-    def __init__(self, side, calc, fact):
+    def __init__(self, side, calc, fact=False):
+
         if side in range(1, 7):
             self.side = side
+            self.worth = side
         else:
             print("Ungültiger Würfel")
 
@@ -56,7 +58,7 @@ class Dice:
 
         if fact is True:
             self.fact = True
-            self.side = math.factorial(self.side)
+            self.worth = math.factorial(self.side)
         else:
             self.fact = False
 
@@ -98,60 +100,66 @@ class Combination:
     def add_dice(self, dice, reverse=False):
         """ add a dice to the Combination """
 
-        self.dice = dice
-        if len(self.dices) < 4:
+        # only add dices while in reasonable numbers
+        #logging.debug("%s", self.result)
+        if self.result < 100:
+
+            self.dice = dice
             self.dices.append(self.dice)
-        else:
-            print("max. 4 Würfel pro Kombination!")
 
-        # if brackets have to be written,
-        # we insert them here in the string according to math rules
-        if len(self.dices) > 2 and self.dice.calc > self.calc_rule:
-            self.calc_string = "(" + self.calc_string + ")"
+            # if brackets have to be written,
+            # we insert them here in the string according to math rules
+            if len(self.dices) > 2 and self.dice.calc > self.calc_rule:
+                self.calc_string = "(" + self.calc_string + ")"
 
-        # if dice should be added in front of the calculation,
-        # set it here
-        if reverse:
-            self.pos1 = self.dice.side
-            self.pos2 = self.result
-            self.string1 = str(self.dice.side)
-            self.string2 = self.calc_string
-        else:
-            self.pos2 = self.dice.side
-            self.pos1 = self.result
-            self.string2 = str(self.dice.side)
-            self.string1 = self.calc_string
 
-        if self.dice.calc == 0:
-            self.result = self.pos1 + self.pos2
-            # if it's the first dice, only the dice string is put in the string
-            if self.calc_string == "":
-                self.calc_string = self.string2
+            #check if dice is factorial, keep that in mind for the string
+            if self.dice.fact:
+                string_dice = str(self.dice.side) + "!"
             else:
-                self.calc_string = self.string1 + "+" + self.string2
+                string_dice = str(self.dice.side)
+
+
+            # if dice should be added in front of the calculation,
+            # set it here
+            if reverse:
+                self.pos1 = self.dice.worth
+                self.pos2 = self.result
+                self.string1 = string_dice
+                self.string2 = self.calc_string
+            else:
+                self.pos2 = self.dice.worth
+                self.pos1 = self.result
+                self.string2 = string_dice
+                self.string1 = self.calc_string
+
+            if self.dice.calc == 0:
+                self.result = self.pos1 + self.pos2
+                # if it's the first dice, only the dice string is put in the string
+                if self.calc_string == "":
+                    self.calc_string = self.string2
+                else:
+                    self.calc_string = self.string1 + "+" + self.string2
+                    self.calc_rule = 1
+            elif self.dice.calc == 1:
+                self.result = self.pos1 - self.pos2
+                self.calc_string = self.string1 + "-" + self.string2
                 self.calc_rule = 1
-        elif self.dice.calc == 1:
-            self.result = self.pos1 - self.pos2
-            self.calc_string = self.string1 + "-" + self.string2
-            self.calc_rule = 1
-        elif self.dice.calc == 2:
-            self.result = self.pos1 * self.pos2
-            self.calc_string = self.string1 + "*" + self.string2
-            self.calc_rule = 3
-        elif self.dice.calc == 3:
-            self.result = self.pos1 / self.pos2
-            self.calc_string = self.string1 + "/" + self.string2
-            self.calc_rule = 3
-        elif self.dice.calc == 4:
-            self.result = self.pos1 ** self.pos2
-            self.calc_string = self.string1 + "**" + self.string2
-            self.calc_rule = 4
-        else:
-            print("Error")
-
-
-
-
+            elif self.dice.calc == 2:
+                self.result = self.pos1 * self.pos2
+                self.calc_string = self.string1 + "*" + self.string2
+                self.calc_rule = 3
+            elif self.dice.calc == 3:
+                self.result = self.pos1 / self.pos2
+                self.calc_string = self.string1 + "/" + self.string2
+                self.calc_rule = 3
+            elif self.dice.calc == 4:
+                if self.pos2 < 100:
+                    self.result = self.pos1 ** self.pos2
+                    self.calc_string = self.string1 + "**" + self.string2
+                    self.calc_rule = 4
+            else:
+                print("Error")
 
 def all_combinations(number1, number2, result):
     """
@@ -161,7 +169,6 @@ def all_combinations(number1, number2, result):
 
     # each number can also be used as factorial,
     # that gives up to four possible numbers for each position
-    # TODO: not math.factorial integrated yet
 
     number_set = set()
     number_set.update([number1, number2])
@@ -172,62 +179,67 @@ def all_combinations(number1, number2, result):
 
         #only calculate, if number 1 and number 2 are used twice
         if (positions[0]+positions[1]+positions[2]+positions[3]) == (number1*2 + number2*2):
+            for fact in itertools.product((True, False), repeat=4):
+                for calc_types in itertools.product(range(0, 5), repeat=3):
+                    kombination = Combination()
 
-            for calc_types in itertools.product(range(0, 5), repeat=3):
+                    kombination.add_dice(Dice(positions[0], 0, fact[0]))
+                    kombination_erg = kombination.get_result()
 
-                kombination = Combination()
+                    if float(kombination_erg[0]).is_integer() and int(kombination_erg[0]) is result:
+                        result_set.add(kombination_erg[1])
+                        logging.debug("%s = %s", kombination_erg[1], kombination_erg[0])
 
-                kombination.add_dice(Dice(positions[0], 0, False))
-                kombination_erg = kombination.get_result()
-                if kombination_erg[0] is result:
-                    result_set.add(kombination_erg[1])
+                    kombination.add_dice(Dice(positions[1], calc_types[0], fact[1]))
+                    kombination_erg = kombination.get_result()
+                    if float(kombination_erg[0]).is_integer() and int(kombination_erg[0]) is result:
+                        result_set.add(kombination_erg[1])
+                        logging.debug("%s = %s", kombination_erg[1], kombination_erg[0])
 
-                kombination.add_dice(Dice(positions[1], calc_types[0], False))
-                kombination_erg = kombination.get_result()
-                if kombination_erg[0] is result:
-                    result_set.add(kombination_erg[1])
+                    kombination2 = copy.copy(kombination)
 
-                kombination2 = copy.copy(kombination)
+                    kombination.add_dice(Dice(positions[2], calc_types[1], fact[2]))
+                    kombination_erg = kombination.get_result()
+                    if float(kombination_erg[0]).is_integer() and int(kombination_erg[0]) is result:
+                        result_set.add(kombination_erg[1])
 
-                kombination.add_dice(Dice(positions[2], calc_types[1], False))
-                kombination_erg = kombination.get_result()
-                if kombination_erg[0] is result:
-                    result_set.add(kombination_erg[1])
+                    if kombination_erg[0] != 0 and calc_types[1] != 3:
+                        kombination2.add_dice(Dice(positions[2], calc_types[1], fact[2]), True)
+                        kombination_erg = kombination2.get_result()
+                        if float(kombination_erg[0]).is_integer() \
+                                and int(kombination_erg[0]) is result:
+                            result_set.add(kombination_erg[1])
 
-                if kombination_erg[0] != 0 and calc_types[1] != 3:
-                    kombination2.add_dice(Dice(positions[2], calc_types[1], False), True)
+                    kombination3 = copy.copy(kombination)
+                    kombination4 = copy.copy(kombination2)
+
+                    kombination.add_dice(Dice(positions[3], calc_types[2], fact[3]))
+                    kombination_erg = kombination.get_result()
+                    if float(kombination_erg[0]).is_integer() \
+                            and int(kombination_erg[0]) is result:
+                        result_set.add(kombination_erg[1])
+
+                    kombination2.add_dice(Dice(positions[3], calc_types[2], fact[3]))
                     kombination_erg = kombination2.get_result()
-                    if kombination_erg[0] is result:
+                    if float(kombination_erg[0]).is_integer() \
+                            and int(kombination_erg[0]) is result:
                         result_set.add(kombination_erg[1])
 
-                kombination3 = copy.copy(kombination)
-                kombination4 = copy.copy(kombination2)
-                print(len(kombination3.dices))
+                    if kombination_erg[0] != 0 and calc_types[2] != 3:
+                        kombination3.add_dice(Dice(positions[3], calc_types[2], fact[3]), True)
+                        kombination_erg = kombination3.get_result()
+                        if float(kombination_erg[0]).is_integer() \
+                                and int(kombination_erg[0]) is result:
+                            result_set.add(kombination_erg[1])
 
-                kombination.add_dice(Dice(positions[3], calc_types[2], False))
-                kombination_erg = kombination.get_result()
-                if kombination_erg[0] is result:
-                    result_set.add(kombination_erg[1])
+                    if kombination_erg[0] != 0 and calc_types[2] != 3:
+                        kombination4.add_dice(Dice(positions[3], calc_types[2], fact[3]), True)
+                        kombination_erg = kombination4.get_result()
+                        if float(kombination_erg[0]).is_integer() \
+                                and int(kombination_erg[0]) is result:
+                            result_set.add(kombination_erg[1])
 
-                kombination2.add_dice(Dice(positions[3], calc_types[2], False))
-                kombination_erg = kombination2.get_result()
-                if kombination_erg[0] is result:
-                    result_set.add(kombination_erg[1])
-
-                if kombination_erg[0] != 0 and calc_types[2] != 3:
-                    kombination3.add_dice(Dice(positions[3], calc_types[2], False), True)
-                    kombination_erg = kombination3.get_result()
-                    if kombination_erg[0] is result:
-                        result_set.add(kombination_erg[1])
-
-                if kombination_erg[0] != 0 and calc_types[2] != 3:
-                    kombination4.add_dice(Dice(positions[3], calc_types[2], False), True)
-                    kombination_erg = kombination4.get_result()
-                    if kombination_erg[0] is result:
-                        result_set.add(kombination_erg[1])
-                print
-
-                #logging.debug("Kombi: %s", kombination_erg[1])
+                    #logging.debug("Kombi: %s", kombination_erg[1])
 
     return result_set
 
@@ -242,15 +254,15 @@ def main():
     """
 
     # Test all combinations
-    print(len(all_combinations(1, 2, 3)))
-    print(all_combinations(1, 2, 3))
+    #print(len(all_combinations(2, 2, 1)))
+    print(all_combinations(6, 6, 1))
 
     # Test Class Combination:
-    neue_kombi = Combination()
-    neue_kombi.add_dice(Dice(6, 0, False))
-    neue_kombi.add_dice(Dice(6, 2, False))
-    neue_kombi.add_dice(Dice(2, 1, False))
-    neue_kombi.add_dice(Dice(2, 3, False))
-    print(neue_kombi.get_result()[1] + "=" + str(neue_kombi.get_result()[0]))
+    #neue_kombi = Combination()
+    #neue_kombi.add_dice(Dice(6, 0, False))
+    #neue_kombi.add_dice(Dice(6, 2, False))
+    #neue_kombi.add_dice(Dice(2, 1, False))
+    #neue_kombi.add_dice(Dice(2, 3, False))
+    #print(neue_kombi.get_result()[1] + "=" + str(neue_kombi.get_result()[0]))
 
 main()
