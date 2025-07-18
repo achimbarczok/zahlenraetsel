@@ -4,7 +4,7 @@
 """
 Solves number puzzles in the style of Heinz Böer.
 
-Copyright (c) 2020 Achim Barczok (achim@lostfile.de)
+Copyright (c) 2020 Achim Barczok
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
